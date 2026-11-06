@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">SimpleTools NFC Reader</string>
+
+    <!-- Commun -->
+    <string name="back">Retour</string>
+    <string name="cancel">Annuler</string>
+    <string name="ok">OK</string>
+    <string name="delete">Supprimer</string>
+    <string name="save">Enregistrer</string>
+    <string name="rename">Renommer</string>
+    <string name="copy">Copier</string>
+    <string name="notes">Notes</string>
+    <string name="notes_optional">Notes (facultatif)</string>
+    <string name="bytes_fmt">%1$d octets</string>
+
+    <!-- Accueil -->
+    <string name="home_tagline">Lisez et analysez les puces NFC compatibles avec votre téléphone. Sans compte, sans publicité, sans envoi de données.</string>
+    <string name="home_scanner">Scanner NFC</string>
+    <string name="home_scanner_desc">Approchez une étiquette, une carte ou un badge</string>
+    <string name="home_history">Historique</string>
+    <string name="home_history_desc">Vos lectures enregistrées sur cet appareil</string>
+    <string name="home_auth">Authentification produit</string>
+    <string name="home_auth_desc">Vêtements et articles avec puce NFC</string>
+    <string name="home_info">Informations NFC</string>
+    <string name="home_info_desc">Ce que l\'application peut et ne peut pas faire</string>
+    <string name="home_settings">Paramètres</string>
+    <string name="home_settings_desc">Langue, thème, confidentialité</string>
+    <string name="home_footer">SimpleTools by AIWORKPAY · Fonctionne en local · Aucune télémétrie</string>
+
+    <!-- Scanner -->
+    <string name="scanner_title">Scanner NFC</string>
+    <string name="nfc_absent_title">NFC indisponible</string>
+    <string name="nfc_absent_body">Ce téléphone ne possède pas de puce NFC (certaines variantes de modèle n\'en ont pas). La lecture est impossible ; aucune lecture n\'est simulée.</string>
+    <string name="nfc_disabled_title">NFC désactivé</string>
+    <string name="nfc_disabled_body">Activez le NFC dans les réglages Android, puis revenez ici.</string>
+    <string name="open_nfc_settings">Ouvrir les réglages NFC</string>
+    <string name="approach_tag">Approchez une puce NFC du dos du téléphone</string>
+    <string name="approach_another">Approchez une autre puce pour un nouveau scan</string>
+    <string name="approach_hint">Gardez la puce immobile jusqu\'à l\'affichage du résultat. Retirez les coques épaisses ou les objets métalliques si besoin.</string>
+    <string name="reading_in_progress">Lecture en cours… ne bougez pas la puce</string>
+    <string name="read_failed">La lecture a échoué. Réessayez en maintenant la puce contre le téléphone.</string>
+    <string name="details_save_export">Détails, enregistrer, exporter</string>
+    <string name="new_scan">Nouveau scan</string>
+    <string name="cd_nfc_animation">Animation de détection NFC</string>
+    <string name="partial_read_title">Lecture incomplète</string>
+    <string name="issue_tag_lost">La puce a été retirée avant la fin de la lecture. Réessayez en la maintenant en place.</string>
+    <string name="issue_io">Erreur de communication avec la puce. Les données ci-dessous sont partielles.</string>
+    <string name="issue_ndef_malformed">Le contenu NDEF de la puce est mal formé ou illisible.</string>
+    <string name="issue_unexpected">Erreur inattendue pendant la lecture.</string>
+
+    <!-- Contenu de la puce -->
+    <string name="section_general">Informations générales</string>
+    <string name="section_technical">Informations techniques</string>
+    <string name="section_content">Contenu</string>
+    <string name="section_issues">Problèmes de lecture</string>
+    <string name="unknown_technology">Technologie non identifiée</string>
+    <string name="uid_hex">UID (hexadécimal)</string>
+    <string name="uid_decimal">UID (décimal, gros-boutiste)</string>
+    <string name="uid_decimal_reversed">UID (décimal, octets inversés)</string>
+    <string name="uid_absent">UID non disponible</string>
+    <string name="uid_note_absent">Android n\'a fourni aucun identifiant pour cette puce.</string>
+    <string name="uid_note_random">UID de 4 octets commençant par 08 : identifiant probablement aléatoire, qui peut changer à chaque lecture. Ne pas l\'utiliser comme identifiant stable.</string>
+    <string name="uid_note_zero">UID composé uniquement de zéros : valeur non fiable.</string>
+    <string name="reveal_uid">Afficher l\'identifiant</string>
+    <string name="mask_uid">Masquer l\'identifiant</string>
+    <string name="android_technologies">Technologies Android</string>
+    <string name="scan_date">Date et heure du scan</string>
+    <string name="nfc_type">Type NFC</string>
+    <string name="iso_standards">Normes ISO compatibles</string>
+    <string name="memory">Capacité mémoire</string>
+    <string name="ndef_capacity">Capacité NDEF</string>
+    <string name="ndef_size">Taille des données NDEF</string>
+    <string name="read_only_state">État d\'écriture</string>
+    <string name="writable">Inscriptible (aucune écriture par cette application)</string>
+    <string name="read_only">Lecture seule</string>
+    <string name="manufacturer_hint">Fabricant (indicatif, d\'après l\'UID)</string>
+    <string name="ndef_formatable_label">NDEF</string>
+    <string name="ndef_formatable_value">Puce vierge formatable en NDEF (aucune écriture en V1)</string>
+    <string name="no_technical_info">Aucune information technique supplémentaire n\'est disponible.</string>
+    <string name="no_ndef_content">Aucune donnée NDEF lisible sur cette puce.</string>
+    <string name="no_ndef_tech">Cette puce n\'expose pas de données NDEF publiques.</string>
+    <string name="kind_text">Texte</string>
+    <string name="kind_url">URL</string>
+    <string name="kind_mime">Type MIME</string>
+    <string name="kind_smart_poster">Smart Poster</string>
+    <string name="kind_external">Type externe</string>
+    <string name="kind_empty">Enregistrement vide</string>
+    <string name="kind_other">Autre enregistrement</string>
+    <string name="open_link_button">Ouvrir le lien…</string>
+    <string name="link_not_openable">Lien non ouvrable depuis l\'application (schéma non pris en charge ou invalide).</string>
+    <string name="open_link_title">Ouvrir ce lien ?</string>
+    <string name="open_link_body">Ce lien provient de la puce et n\'a pas été vérifié. Il sera ouvert dans votre navigateur.</string>
+    <string name="open_link_confirm">Ouvrir</string>
+    <string name="warn_not_https">Connexion non chiffrée (http).</string>
+    <string name="warn_ip_host">L\'adresse est une adresse IP et non un nom de domaine.</string>
+    <string name="warn_punycode">Le nom de domaine utilise des caractères internationaux (xn--) : vérifiez qu\'il ne ressemble pas à un autre site.</string>
+    <string name="warn_user_info">L\'adresse contient des identifiants avant le nom de domaine : suspect.</string>
+    <string name="warn_port">Port réseau inhabituel.</string>
+    <string name="warn_long">Adresse très longue.</string>
+
+    <!-- Détails -->
+    <string name="details_title">Détails de la puce</string>
+    <string name="reading_not_found">Lecture introuvable. Elle a peut-être été supprimée.</string>
+    <string name="save_title">Enregistrer la lecture</string>
+    <string name="save_consent">Cette lecture sera enregistrée uniquement sur cet appareil.</string>
+    <string name="copy_title">Copier les données</string>
+    <string name="include_uid">Inclure l\'identifiant (UID)</string>
+    <string name="uid_in_data_warning">Attention : les données publiques d\'une puce (par exemple une URL) peuvent elles-mêmes contenir l\'UID ou un numéro de série.</string>
+    <string name="saved_ok">Lecture enregistrée</string>
+    <string name="copied_ok">Données copiées</string>
+    <string name="action_failed">L\'action a échoué</string>
+    <string name="share_title">Partager la lecture</string>
+    <string name="export_pdf">Export PDF</string>
+    <string name="export_json">Export JSON</string>
+    <string name="delete_reading_title">Supprimer cette lecture ?</string>
+    <string name="delete_reading_body">Cette action est définitive.</string>
+
+    <!-- Historique -->
+    <string name="history_title">Historique</string>
+    <string name="search_hint">Rechercher (nom, type, UID, notes)</string>
+    <string name="clear_search">Effacer la recherche</string>
+    <string name="history_empty">Aucune lecture enregistrée. Les lectures ne sont jamais enregistrées automatiquement : utilisez « Enregistrer » dans les détails d\'une puce.</string>
+    <string name="history_no_result">Aucun résultat.</string>
+    <string name="clear_all">Tout effacer</string>
+    <string name="clear_all_title">Effacer tout l\'historique ?</string>
+    <string name="clear_all_body">Toutes les lectures enregistrées seront supprimées définitivement.</string>
+
+    <!-- Authentification -->
+    <string name="auth_title">Authentification produit</string>
+    <string name="auth_disclaimer_title">Important</string>
+    <string name="auth_disclaimer">La présence d\'une puce NFC ne prouve pas qu\'un produit est authentique. Cette application affiche les données accessibles ; seule la vérification sur le service officiel de la marque fait foi.</string>
+    <string name="auth_result_title">Résultat de l\'analyse</string>
+    <string name="auth_verdict_no_data">Aucune donnée publique (NDEF) n\'a pu être lue sur cette puce. Aucune information de vérification n\'est accessible.</string>
+    <string name="auth_verdict_no_url">Des données publiques ont été lues, mais aucune adresse web de vérification n\'y figure.</string>
+    <string name="auth_verdict_official_domain">Une adresse web pointant vers un domaine reconnu d\'une marque a été trouvée. Ce n\'est pas une preuve d\'authenticité : ouvrez le service officiel et suivez ses instructions.</string>
+    <string name="auth_verdict_unrecognized">Une adresse web a été trouvée, mais son domaine n\'est pas reconnu comme un service officiel. Soyez prudent avant de l\'ouvrir.</string>
+    <string name="auth_not_proof">Ce résultat n\'indique en aucun cas que le produit est authentique ou contrefait.</string>
+    <string name="auth_url_found">Adresse trouvée sur la puce</string>
+    <string name="auth_domain_match">Domaine</string>
+    <string name="auth_domain_match_value">Correspond au domaine officiel de %1$s</string>
+    <string name="auth_official_services">Services officiels</string>
+    <string name="auth_official_body">Vous pouvez ouvrir volontairement le service officiel de la marque, puis y saisir ou scanner les informations demandées.</string>
+    <string name="auth_open_official">Ouvrir le service officiel %1$s</string>
+    <string name="auth_no_affiliation">SimpleTools NFC Reader n\'est affilié à aucune marque. Les noms de marques appartiennent à leurs propriétaires.</string>
+
+    <!-- Paramètres -->
+    <string name="settings_title">Paramètres</string>
+    <string name="language">Langue</string>
+    <string name="language_system">Langue du système</string>
+    <string name="language_fr">Français</string>
+    <string name="language_en">English</string>
+    <string name="theme">Thème</string>
+    <string name="theme_system">Système</string>
+    <string name="theme_light">Clair</string>
+    <string name="theme_dark">Sombre</string>
+    <string name="privacy">Confidentialité</string>
+    <string name="mask_ids_setting">Masquer les identifiants par défaut</string>
+    <string name="privacy_statement">Aucun serveur, aucun compte, aucune publicité, aucune télémétrie. Les données NFC ne quittent jamais votre téléphone sauf si vous les partagez vous-même. L\'application n\'a pas d\'accès à Internet.</string>
+    <string name="data_section">Données locales</string>
+    <string name="erase_history">Effacer l\'historique</string>
+    <string name="erase_history_body">Supprime toutes les lectures enregistrées et les fichiers d\'export temporaires.</string>
+    <string name="erase_all">Effacer toutes les données locales</string>
+    <string name="erase_all_body">Supprime l\'historique, les exports temporaires, la dernière lecture et réinitialise les préférences.</string>
+    <string name="erase_confirm">Effacer</string>
+    <string name="data_erased">Données effacées</string>
+    <string name="about">À propos</string>
+    <string name="version_fmt">Version %1$s</string>
+    <string name="publisher">Éditeur</string>
+    <string name="about_body">SimpleTools NFC Reader est un lecteur NFC en lecture seule : il n\'écrit jamais sur les puces, ne clone pas de badges et ne contourne aucune protection. Gratuit, sans publicité. Non affilié aux marques citées.</string>
+
+    <!-- Informations NFC -->
+    <string name="info_title">Informations NFC</string>
+    <string name="info_reads_title">Ce que l\'application lit</string>
+    <string name="info_reads_body">Technologies détectées (NFC-A/B/F/V, ISO-DEP, MIFARE), identifiant (UID) quand Android le fournit, données NDEF publiques (texte, URL, MIME) et informations techniques disponibles sans clé.</string>
+    <string name="info_not_title">Ce qu\'elle ne fait pas</string>
+    <string name="info_not_body">Aucune écriture sur les puces, aucun clonage, aucune récupération de clés, aucun contournement de contrôle d\'accès, aucune ouverture automatique de lien, aucune transmission de données.</string>
+    <string name="info_animal_title">Puces animales</string>
+    <string name="info_animal_body">Les puces d\'identification animale ISO 11784/11785 fonctionnent à 134,2 kHz. Le NFC d\'un smartphone fonctionne à 13,56 MHz : il ne peut pas les lire directement. Un lecteur RFID externe sera nécessaire (version ultérieure). Même avec un tel lecteur, seul le numéro d\'identification est lu, pas les coordonnées du propriétaire.</string>
+    <string name="info_readers_title">Lecteurs</string>
+    <string name="reader_builtin">NFC intégré</string>
+    <string name="reader_bluetooth">Lecteur RFID Bluetooth externe</string>
+    <string name="reader_usb">Lecteur RFID USB-C externe</string>
+    <string name="reader_supported">pris en charge</string>
+    <string name="reader_planned">prévu, non disponible en V1</string>
+    <string name="info_auth_title">Authentification de produits</string>
+    <string name="info_auth_body">Une puce peut contenir une adresse web de vérification. L\'application l\'affiche et vous propose d\'ouvrir le service officiel, mais ne peut jamais garantir l\'authenticité d\'un produit.</string>
+
+    <!-- Rapport -->
+    <string name="report_title">Rapport de lecture NFC</string>
+    <string name="report_reading_name">Nom de la lecture</string>
+    <string name="report_unnamed">Sans nom</string>
+    <string name="report_date">Date</string>
+    <string name="report_technology">Technologie</string>
+    <string name="report_identifier">Identifiant</string>
+    <string name="report_uid_excluded">Non inclus (choix de l\'utilisateur)</string>
+    <string name="public_data">Données publiques détectées</string>
+    <string name="report_disclaimer">Avertissement : ce rapport décrit uniquement les données techniques accessibles via les API Android NFC. Il ne prouve ni l\'authenticité d\'un produit ni l\'identité d\'un porteur. Le fabricant n\'est indiqué qu\'à titre indicatif. Certaines caractéristiques ne peuvent pas être déterminées par le téléphone. SimpleTools NFC Reader (AIWORKPAY) n\'est affilié à aucune marque.</string>
+</resources>
