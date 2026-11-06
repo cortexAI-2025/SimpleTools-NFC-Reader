@@ -1,6 +1,8 @@
 package com.simpletools.nfcreader
 
 import android.content.Context
+import android.graphics.pdf.PdfRenderer
+import android.os.ParcelFileDescriptor
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.simpletools.nfcreader.core.export.ExportService
@@ -45,11 +47,18 @@ class PdfExportInstrumentedTest {
         assertTrue(bytes.size > 1000)
     }
 
+    private fun pageCount(bytes: ByteArray): Int {
+        val f = java.io.File(context.cacheDir, "pagecount-test.pdf").apply { writeBytes(bytes) }
+        return ParcelFileDescriptor.open(f, ParcelFileDescriptor.MODE_READ_ONLY).use { pfd ->
+            PdfRenderer(pfd).use { it.pageCount }
+        }.also { f.delete() }
+    }
+
     @Test fun longReportIsPaginated() {
         val strings = StringProvider { id, args -> context.getString(id, *args) }
-        val small = ByteArrayOutputStream().also { PdfReportWriter.write(ReportBuilder(strings).build(fixture(1), null, null, false), it) }
-        val big = ByteArrayOutputStream().also { PdfReportWriter.write(ReportBuilder(strings).build(fixture(80), null, null, false), it) }
-        assertTrue("un long rapport doit produire un PDF plus gros (plusieurs pages)", big.size() > small.size() * 2)
+        fun render(n: Int) = ByteArrayOutputStream().also { PdfReportWriter.write(ReportBuilder(strings).build(fixture(n), null, null, false), it) }.toByteArray()
+        assertEquals(1, pageCount(render(1)))
+        assertTrue("un long rapport doit tenir sur plusieurs pages", pageCount(render(80)) > 1)
     }
 
     @Test fun exportServiceWritesShareableFiles() {
