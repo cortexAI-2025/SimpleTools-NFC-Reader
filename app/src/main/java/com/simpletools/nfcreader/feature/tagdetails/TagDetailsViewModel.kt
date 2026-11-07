@@ -36,6 +36,7 @@ sealed interface DetailsEvent {
     data object Deleted : DetailsEvent
     data class Share(val file: File, val mime: String) : DetailsEvent
     data object Failed : DetailsEvent
+    data object InventoryAdded : DetailsEvent
 }
 
 class TagDetailsViewModel(
@@ -43,6 +44,7 @@ class TagDetailsViewModel(
     private val holder: CurrentScanHolder,
     private val history: HistoryRepository,
     private val exporter: ExportService,
+    private val inventory: com.simpletools.nfcreader.core.inventory.InventoryRepository,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : ViewModel() {
 
@@ -109,6 +111,31 @@ class TagDetailsViewModel(
     }
 
     fun exportJson(includeUid: Boolean) = export("application/json") { snap, s -> exporter.createJsonFile(snap, s.name, s.notes, includeUid) }
+
+    /** Export CSV (PRO). */
+    fun exportCsv(includeUid: Boolean) = export("text/csv") { snap, s -> exporter.createCsvFile(snap, s.name, includeUid) }
+
+    /** Ajout à une collection d'inventaire (PRO), déclenché par l'utilisateur uniquement. */
+    fun addToInventory(collectionId: Long, category: String, includeUid: Boolean) {
+        val s = _state.value
+        val snap = s.snapshot ?: return
+        viewModelScope.launch {
+            try {
+                inventory.addItem(
+                    collectionId = collectionId,
+                    name = s.name.ifBlank { snap.family.label ?: "Tag" },
+                    category = category,
+                    notes = s.notes,
+                    uid = if (includeUid) snap.uidHex else null,
+                    chipType = snap.nfcType ?: snap.family.label ?: "?",
+                    snapshotJson = com.simpletools.nfcreader.core.export.SnapshotJson.encode(snap, includeUid),
+                )
+                _events.send(DetailsEvent.InventoryAdded)
+            } catch (e: Exception) {
+                _events.send(DetailsEvent.Failed)
+            }
+        }
+    }
 
     fun exportPdf(includeUid: Boolean) = export("application/pdf") { snap, s -> exporter.createPdfFile(snap, s.name, s.notes, includeUid) }
 

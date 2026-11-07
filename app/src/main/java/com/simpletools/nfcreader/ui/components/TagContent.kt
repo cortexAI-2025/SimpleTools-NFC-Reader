@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.selection.SelectionContainer
+import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
@@ -28,7 +29,7 @@ import java.util.Date
 
 /** Affichage technique complet d'une puce. Tout le contenu provient de la puce : texte brut uniquement. */
 @Composable
-fun TagContent(snapshot: TagSnapshot, maskIds: Boolean, onOpenUrl: (String) -> Unit) {
+fun TagContent(snapshot: TagSnapshot, maskIds: Boolean, onOpenUrl: (String) -> Unit, isPro: Boolean = false, onUnlock: () -> Unit = {}) {
     var revealed by rememberSaveable { mutableStateOf(false) }
     val hide = maskIds && !revealed
     Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
@@ -75,6 +76,22 @@ fun TagContent(snapshot: TagSnapshot, maskIds: Boolean, onOpenUrl: (String) -> U
                 Text(stringResource(R.string.no_technical_info), style = MaterialTheme.typography.bodyMedium)
             }
         }
+        SectionCard(stringResource(R.string.section_hex)) {
+            if (!isPro) {
+                Text(stringResource(R.string.pro_locked_body), style = MaterialTheme.typography.bodyMedium)
+                Button(onClick = onUnlock) { Text(stringResource(R.string.unlock_pro)) }
+            } else {
+                val flat = flattenRecords(snapshot.ndefRecords)
+                if (flat.isEmpty()) Text(stringResource(R.string.no_ndef_content), style = MaterialTheme.typography.bodyMedium)
+                flat.forEachIndexed { i, r ->
+                    Text("#${i + 1} · ${r.typeName} · ${stringResource(R.string.bytes_fmt, r.payloadSize)}", style = MaterialTheme.typography.labelLarge)
+                    SelectionContainer {
+                        Text(r.rawHex ?: "—", style = MaterialTheme.typography.bodySmall, fontFamily = androidx.compose.ui.text.font.FontFamily.Monospace)
+                    }
+                }
+                if (flat.any { it.rawHex?.endsWith("…") == true }) Text(stringResource(R.string.hex_truncated), style = MaterialTheme.typography.bodySmall)
+            }
+        }
         SectionCard(stringResource(R.string.section_content)) {
             val records = snapshot.ndefRecords
             if (records.isEmpty()) {
@@ -88,6 +105,8 @@ fun TagContent(snapshot: TagSnapshot, maskIds: Boolean, onOpenUrl: (String) -> U
         }
     }
 }
+
+private fun flattenRecords(list: List<NdefRecordInfo>): List<NdefRecordInfo> = list.flatMap { listOf(it) + flattenRecords(it.children) }
 
 @Composable
 private fun RecordView(index: Int, r: NdefRecordInfo, onOpenUrl: (String) -> Unit) {

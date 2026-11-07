@@ -15,7 +15,7 @@ import android.nfc.tech.NfcV
 import java.io.IOException
 
 /** Implémentation Android, en lecture seule : aucun appel write/format/makeReadOnly. */
-class AndroidTagAccess(private val tag: Tag) : TagAccess {
+class AndroidTagAccess(val tag: Tag) : TagAccess {
 
     override val id: ByteArray? get() = tag.id
     override val techList: List<String> get() = tag.techList.toList()

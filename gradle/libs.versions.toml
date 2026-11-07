@@ -17,6 +17,7 @@ androidxTestCore = "1.6.1"
 androidxTestExt = "1.2.1"
 androidxTestRunner = "1.6.2"
 json = "20240303"
+billing = "7.1.1"
 
 [libraries]
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "coreKtx" }
@@ -45,6 +46,7 @@ androidx-test-core = { module = "androidx.test:core", version.ref = "androidxTes
 androidx-test-ext-junit = { module = "androidx.test.ext:junit", version.ref = "androidxTestExt" }
 androidx-test-runner = { module = "androidx.test:runner", version.ref = "androidxTestRunner" }
 json = { module = "org.json:json", version.ref = "json" }
+androidx-billing-ktx = { module = "com.android.billingclient:billing-ktx", version.ref = "billing" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

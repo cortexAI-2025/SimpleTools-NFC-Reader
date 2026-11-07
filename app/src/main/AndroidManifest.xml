@@ -2,8 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- Seule permission : NFC (permission normale, aucun accès réseau, stockage ou localisation). -->
+    <!-- Permissions : NFC (lecture/écriture de tags) et BILLING (achat PRO). Aucun accès réseau, stockage ou localisation. -->
     <uses-permission android:name="android.permission.NFC" />
+    <!-- Achat PRO unique via Google Play. Aucune donnée d'achat n'est envoyée à un serveur de l'éditeur. -->
+    <uses-permission android:name="com.android.vending.BILLING" />
 
     <!-- NFC non requis : l'APK s'installe aussi sur les variantes sans NFC et affiche un message explicite. -->
     <uses-feature android:name="android.hardware.nfc" android:required="false" />

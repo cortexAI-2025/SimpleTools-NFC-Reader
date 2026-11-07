@@ -31,7 +31,7 @@ object NdefParser {
     )
 
     fun parse(records: List<RawNdefRecord>, depth: Int = 0): List<NdefRecordInfo> =
-        records.map { parseRecord(it, depth) }
+        records.map { parseRecord(it, depth).copy(rawHex = it.payload.toHexPreview()) }
 
     /** Décode un message NDEF sérialisé (utilisé pour les Smart Posters imbriqués). */
     fun parseMessageBytes(bytes: ByteArray): List<RawNdefRecord> {

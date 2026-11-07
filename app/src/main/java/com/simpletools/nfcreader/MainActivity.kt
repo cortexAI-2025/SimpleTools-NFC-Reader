@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import kotlinx.coroutines.launch
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.simpletools.nfcreader.core.settings.AppSettings
@@ -15,6 +16,11 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         val container = (application as SimpleToolsApp).container
+        // Licence : état local d'abord (utilisable hors ligne), puis vérification Google Play en arrière-plan.
+        container.appScope.launch {
+            container.license.load()
+            container.license.refresh()
+        }
         setContent {
             val settings by container.settings.settings.collectAsStateWithLifecycle(AppSettings())
             SimpleToolsTheme(settings.theme) {

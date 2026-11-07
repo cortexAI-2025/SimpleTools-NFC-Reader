@@ -44,6 +44,8 @@ fun ScannerScreen(
     vm: ScannerViewModel,
     controller: NfcReaderController,
     maskIds: Boolean,
+    isPro: Boolean,
+    onUnlock: () -> Unit,
     onBack: () -> Unit,
     onDetails: () -> Unit,
 ) {
@@ -56,7 +58,7 @@ fun ScannerScreen(
             ScanStatusPanel(state, Modifier.fillMaxWidth())
             state.snapshot?.let { snap ->
                 Button(onClick = onDetails, modifier = Modifier.fillMaxWidth()) { Text(stringResource(R.string.details_save_export)) }
-                TagContent(snap, maskIds, openUrl)
+                TagContent(snap, maskIds, openUrl, isPro = isPro, onUnlock = onUnlock)
                 OutlinedButton(onClick = vm::clear, modifier = Modifier.fillMaxWidth()) { Text(stringResource(R.string.new_scan)) }
             }
         }
