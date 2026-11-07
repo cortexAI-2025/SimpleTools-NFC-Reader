@@ -7,6 +7,11 @@
     <!-- Achat PRO unique via Google Play. Aucune donnée d'achat n'est envoyée à un serveur de l'éditeur. -->
     <uses-permission android:name="com.android.vending.BILLING" />
 
+    <!-- Ces permissions sont ajoutées par la bibliothèque Play Billing : l'application n'a pas d'accès réseau.
+         Billing communique avec l'application Google Play par IPC. Retirées explicitement. -->
+    <uses-permission android:name="android.permission.INTERNET" tools:node="remove" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" tools:node="remove" />
+
     <!-- NFC non requis : l'APK s'installe aussi sur les variantes sans NFC et affiche un message explicite. -->
     <uses-feature android:name="android.hardware.nfc" android:required="false" />
 
