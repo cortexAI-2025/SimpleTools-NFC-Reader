@@ -13,13 +13,28 @@ android {
         applicationId = "com.simpletools.nfcreader"
         minSdk = 26
         targetSdk = 35
-        versionCode = 1
-        versionName = "1.0.0"
+        versionCode = 4
+        versionName = "1.3.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    // Signature de publication : uniquement si un keystore est fourni par l'environnement (jamais dans le dépôt).
+    // Sans ces variables, l'AAB release est produit NON signé : aucune signature n'est inventée.
+    val releaseKeystore = System.getenv("SIMPLETOOLS_KEYSTORE_PATH")
+    if (releaseKeystore != null) {
+        signingConfigs {
+            create("release") {
+                storeFile = file(releaseKeystore)
+                storePassword = System.getenv("SIMPLETOOLS_KEYSTORE_PASSWORD")
+                keyAlias = System.getenv("SIMPLETOOLS_KEY_ALIAS")
+                keyPassword = System.getenv("SIMPLETOOLS_KEY_PASSWORD")
+            }
+        }
     }
 
     buildTypes {
         release {
+            if (releaseKeystore != null) signingConfig = signingConfigs.getByName("release")
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
@@ -81,6 +96,7 @@ dependencies {
     ksp(libs.androidx.room.compiler)
     implementation(libs.androidx.datastore.preferences)
     implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.androidx.billing.ktx)
 
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)

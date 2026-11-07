@@ -28,8 +28,16 @@ jobs:
 
       - uses: gradle/actions/setup-gradle@v4
 
-      - name: Vérification du code (Android Lint) + tests unitaires + APK debug
-        run: ./gradlew lintDebug testDebugUnitTest assembleDebug --stacktrace
+      - name: Vérification du code (Android Lint) + tests unitaires + APK debug + AAB release
+        run: ./gradlew lintDebug testDebugUnitTest assembleDebug bundleRelease --stacktrace
+
+      - name: Publication de l'AAB release NON signé (aucune signature inventée)
+        uses: actions/upload-artifact@v4
+        with:
+          name: SimpleTools-NFC-Reader-release-unsigned-aab
+          path: app/build/outputs/bundle/release/app-release.aab
+          if-no-files-found: error
+          retention-days: 30
 
       - name: Publication de l'APK debug
         uses: actions/upload-artifact@v4
@@ -48,6 +56,7 @@ jobs:
             app/build/reports/lint-results-debug.html
             app/build/reports/tests/testDebugUnitTest/
             app/build/test-results/testDebugUnitTest/
+            app/schemas/
           retention-days: 14
 
   instrumented-pdf:

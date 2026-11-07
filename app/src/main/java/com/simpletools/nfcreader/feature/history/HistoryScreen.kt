@@ -15,6 +15,7 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -25,6 +26,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -40,7 +42,17 @@ import java.text.DateFormat
 import java.util.Date
 
 @Composable
-fun HistoryScreen(vm: HistoryViewModel, maskIds: Boolean, onBack: () -> Unit, onOpen: (Long) -> Unit) {
+fun HistoryScreen(
+    vm: HistoryViewModel,
+    maskIds: Boolean,
+    isPro: Boolean,
+    onUnlock: () -> Unit,
+    onBack: () -> Unit,
+    onOpen: (Long) -> Unit,
+    onCompare: (Long, Long) -> Unit,
+) {
+    var selectMode by remember { mutableStateOf(false) }
+    var selected by remember { mutableStateOf(listOf<Long>()) }
     val items by vm.items.collectAsStateWithLifecycle()
     val query by vm.query.collectAsStateWithLifecycle()
     var deleteTarget by rememberSaveable { mutableStateOf<Long?>(null) }
@@ -51,6 +63,10 @@ fun HistoryScreen(vm: HistoryViewModel, maskIds: Boolean, onBack: () -> Unit, on
     AppScaffold(
         stringResource(R.string.history_title), onBack,
         actions = {
+            if (!isPro) TextButton(onClick = onUnlock) { Text(stringResource(R.string.compare_locked)) }
+            else TextButton(onClick = { selectMode = !selectMode; selected = emptyList() }) {
+                Text(stringResource(if (selectMode) R.string.cancel else R.string.compare_action))
+            }
             if (!items.isNullOrEmpty()) {
                 TextButton(onClick = { confirmAll = true }) { Text(stringResource(R.string.clear_all)) }
             }
@@ -71,6 +87,14 @@ fun HistoryScreen(vm: HistoryViewModel, maskIds: Boolean, onBack: () -> Unit, on
                 },
             )
             val list = items
+            if (selectMode) {
+                Text(stringResource(R.string.compare_pick, selected.size), style = MaterialTheme.typography.bodyMedium)
+                if (selected.size == 2) {
+                    Button(onClick = { onCompare(selected[0], selected[1]) }, modifier = Modifier.fillMaxWidth()) {
+                        Text(stringResource(R.string.compare_run))
+                    }
+                }
+            }
             when {
                 list == null -> Unit
                 list.isEmpty() -> Text(
@@ -79,7 +103,11 @@ fun HistoryScreen(vm: HistoryViewModel, maskIds: Boolean, onBack: () -> Unit, on
                 )
                 else -> LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp), modifier = Modifier.fillMaxSize()) {
                     items(list, key = { it.id }) { e ->
-                        ReadingCard(e, maskIds, onOpen = { onOpen(e.id) },
+                        ReadingCard(e, maskIds, onOpen = {
+                            if (selectMode) {
+                                selected = if (e.id in selected) selected - e.id else (selected + e.id).takeLast(2)
+                            } else onOpen(e.id)
+                        },
                             onRename = { renameTarget = e.id; renameText = e.name },
                             onDelete = { deleteTarget = e.id })
                     }

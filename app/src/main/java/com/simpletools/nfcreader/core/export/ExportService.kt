@@ -22,6 +22,20 @@ class ExportService(private val context: Context, private val strings: StringPro
         return File(dir, fileName(snapshot, "pdf")).also { f -> f.outputStream().use { PdfReportWriter.write(doc, it) } }
     }
 
+    /** Export CSV (PRO) : une ligne par enregistrement NDEF, métadonnées de la lecture répétées. */
+    fun createCsvFile(snapshot: TagSnapshot, name: String?, includeUid: Boolean): File {
+        val s = if (includeUid) snapshot else snapshot.withoutUid()
+        val header = listOf("name", "scannedAt", "family", "technologies", "uid", "recordIndex", "kind", "type", "text", "uri", "mimeType", "payloadSize", "payloadHex")
+        val base = listOf(name.orEmpty(), s.scannedAt.toString(), s.family.name, s.technologies.joinToString("|"), s.uidHex.orEmpty())
+        val rows = if (s.ndefRecords.isEmpty()) listOf(base + listOf("", "", "", "", "", "", "", "")) else
+            s.ndefRecords.flatMapIndexed { i, r -> listOf(base + listOf((i + 1).toString(), r.kind.name, r.typeName, r.text.orEmpty(), r.uri.orEmpty(), r.mimeType.orEmpty(), r.payloadSize.toString(), r.rawHex.orEmpty())) }
+        return File(dir, fileName(s, "csv")).also { it.writeText(com.simpletools.nfcreader.core.analysis.Csv.document(header, rows)) }
+    }
+
+    /** Écrit un texte dans le cache d'export (partage ensuite via FileProvider). */
+    fun writeTextFile(baseName: String, ext: String, text: String): File =
+        File(dir, "$baseName-${System.currentTimeMillis()}.$ext").also { it.writeText(text) }
+
     /** Texte brut lisible pour le presse-papiers. */
     fun clipboardText(snapshot: TagSnapshot, name: String?, notes: String?, includeUid: Boolean): String {
         val doc = ReportBuilder(strings).build(snapshot, name, notes, includeUid)

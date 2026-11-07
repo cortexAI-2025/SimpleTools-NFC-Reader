@@ -41,7 +41,7 @@ import com.simpletools.nfcreader.ui.components.SectionCard
 import kotlinx.coroutines.launch
 
 @Composable
-fun SettingsScreen(vm: SettingsViewModel, onBack: () -> Unit) {
+fun SettingsScreen(vm: SettingsViewModel, container: com.simpletools.nfcreader.AppContainer, isPro: Boolean, onUnlock: () -> Unit, onBack: () -> Unit) {
     val settings by vm.settings.collectAsStateWithLifecycle()
     val context = LocalContext.current
     val snackbar = remember { SnackbarHostState() }
@@ -78,6 +78,7 @@ fun SettingsScreen(vm: SettingsViewModel, onBack: () -> Unit) {
                 OutlinedButton(onClick = { confirm = "history" }, modifier = Modifier.fillMaxWidth()) { Text(stringResource(R.string.erase_history)) }
                 Button(onClick = { confirm = "all" }, modifier = Modifier.fillMaxWidth()) { Text(stringResource(R.string.erase_all)) }
             }
+            BackupSection(container, isPro, onUnlock) { msg -> scope.launch { snackbar.showSnackbar(msg) } }
             SectionCard(stringResource(R.string.about)) {
                 InfoRow(stringResource(R.string.app_name), stringResource(R.string.version_fmt, versionName))
                 InfoRow(stringResource(R.string.publisher), "AIWORKPAY — SimpleTools")

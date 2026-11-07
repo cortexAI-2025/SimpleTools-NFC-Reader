@@ -64,6 +64,7 @@ object SnapshotJson {
         r.uri?.let { put("uri", it) }
         r.mimeType?.let { put("mimeType", it) }
         r.payloadHex?.let { put("payloadHex", it) }
+        r.rawHex?.let { put("rawHex", it) }
         if (r.children.isNotEmpty()) put("children", JSONArray(r.children.map(::recordToJson)))
     }
 
@@ -110,6 +111,7 @@ object SnapshotJson {
         uri = o.optStringOrNull("uri"),
         mimeType = o.optStringOrNull("mimeType"),
         payloadHex = o.optStringOrNull("payloadHex"),
+        rawHex = o.optStringOrNull("rawHex"),
         children = (o.optJSONArray("children") ?: JSONArray()).let { a -> List(a.length()) { recordFromJson(a.getJSONObject(it)) } },
     )
 

@@ -24,6 +24,8 @@ data class NdefRecordInfo(
     val uri: String? = null,
     val mimeType: String? = null,
     val payloadHex: String? = null,
+    /** Octets accessibles de la charge utile (aperçu jusqu'à 256 octets), pour la vue hexadécimale PRO. */
+    val rawHex: String? = null,
     val children: List<NdefRecordInfo> = emptyList(),
 )
 

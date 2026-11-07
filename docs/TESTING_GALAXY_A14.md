@@ -1,5 +1,7 @@
 # Procédure de validation matérielle — Samsung Galaxy A14 (Android 15)
 
+> Procédure détaillée V1.3 : voir aussi [NFC_RECETTE_CHECKLIST.md](NFC_RECETTE_CHECKLIST.md) (couvre écriture, modèles, inventaire et achats).
+
 > Les tests automatiques (fixtures, Robolectric) **ne valident pas le matériel NFC**. Cette procédure est nécessaire
 > avant tout « GO validation matérielle ».
 

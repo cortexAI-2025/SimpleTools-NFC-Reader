@@ -12,8 +12,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
@@ -26,6 +26,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -48,10 +49,76 @@ import java.io.File
 
 private enum class PendingAction { SAVE, COPY, PDF, JSON }
 
+/** Actions PRO sur une lecture : export CSV et ajout à une collection d'inventaire. */
+@Composable
+private fun ProDetailsActions(
+    container: com.simpletools.nfcreader.AppContainer,
+    vm: TagDetailsViewModel,
+    isPro: Boolean,
+    onUnlock: () -> Unit,
+) {
+    var showInventory by rememberSaveable { mutableStateOf(false) }
+    var showCsv by rememberSaveable { mutableStateOf(false) }
+    if (!isPro) {
+        OutlinedButton(onClick = onUnlock, modifier = Modifier.fillMaxWidth()) { Text(stringResource(R.string.pro_action_locked)) }
+        return
+    }
+    Row(horizontalArrangement = Arrangement.spacedBy(8.dp), modifier = Modifier.fillMaxWidth()) {
+        OutlinedButton(onClick = { showCsv = true }, modifier = Modifier.weight(1f)) { Text(stringResource(R.string.export_csv)) }
+        OutlinedButton(onClick = { showInventory = true }, modifier = Modifier.weight(1f)) { Text(stringResource(R.string.add_to_inventory)) }
+    }
+    if (showCsv) {
+        var includeUid by rememberSaveable { mutableStateOf(false) }
+        AlertDialog(
+            onDismissRequest = { showCsv = false },
+            title = { Text(stringResource(R.string.export_csv)) },
+            text = {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Checkbox(includeUid, { includeUid = it })
+                    Text(stringResource(R.string.include_uid))
+                }
+            },
+            confirmButton = { TextButton(onClick = { showCsv = false; vm.exportCsv(includeUid) }) { Text(stringResource(R.string.ok)) } },
+            dismissButton = { TextButton(onClick = { showCsv = false }) { Text(stringResource(R.string.cancel)) } },
+        )
+    }
+    if (showInventory) {
+        val collections by container.inventory.observeCollections().collectAsState(initial = emptyList())
+        var category by rememberSaveable { mutableStateOf("") }
+        var includeUid by rememberSaveable { mutableStateOf(false) }
+        AlertDialog(
+            onDismissRequest = { showInventory = false },
+            title = { Text(stringResource(R.string.add_to_inventory)) },
+            text = {
+                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    if (collections.isEmpty()) Text(stringResource(R.string.inventory_create_first))
+                    collections.forEach { c ->
+                        TextButton(onClick = {
+                            showInventory = false
+                            vm.addToInventory(c.id, category.ifBlank { "Général" }, includeUid)
+                        }) { Text(c.name) }
+                    }
+                    OutlinedTextField(category, { category = it.take(40) }, singleLine = true,
+                        label = { Text(stringResource(R.string.item_category)) })
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Checkbox(includeUid, { includeUid = it })
+                        Text(stringResource(R.string.include_uid))
+                    }
+                }
+            },
+            confirmButton = {},
+            dismissButton = { TextButton(onClick = { showInventory = false }) { Text(stringResource(R.string.cancel)) } },
+        )
+    }
+}
+
 @Composable
 fun TagDetailsScreen(
+    container: com.simpletools.nfcreader.AppContainer,
     vm: TagDetailsViewModel,
     maskIds: Boolean,
+    isPro: Boolean,
+    onUnlock: () -> Unit,
     onBack: () -> Unit,
 ) {
     val state by vm.state.collectAsStateWithLifecycle()
@@ -66,6 +133,7 @@ fun TagDetailsScreen(
     val failedMsg = stringResource(R.string.action_failed)
     val copiedMsg = stringResource(R.string.copied_ok)
     val shareTitle = stringResource(R.string.share_title)
+    val inventoryMsg = stringResource(R.string.inventory_added)
 
     LaunchedEffect(vm) {
         vm.events.collect { e ->
@@ -73,6 +141,7 @@ fun TagDetailsScreen(
                 DetailsEvent.Saved -> snackbar.showSnackbar(savedMsg)
                 DetailsEvent.Deleted -> onBack()
                 DetailsEvent.Failed -> snackbar.showSnackbar(failedMsg)
+                DetailsEvent.InventoryAdded -> snackbar.showSnackbar(inventoryMsg)
                 is DetailsEvent.Share -> shareFile(context, e.file, e.mime, shareTitle)
             }
         }
@@ -102,7 +171,8 @@ fun TagDetailsScreen(
                     Button(onClick = { pending = PendingAction.PDF }, modifier = Modifier.weight(1f)) { Text(stringResource(R.string.export_pdf)) }
                     Button(onClick = { pending = PendingAction.JSON }, modifier = Modifier.weight(1f)) { Text(stringResource(R.string.export_json)) }
                 }
-                TagContent(snap, maskIds, openUrl)
+                ProDetailsActions(container, vm, isPro, onUnlock)
+                TagContent(snap, maskIds, openUrl, isPro = isPro, onUnlock = onUnlock)
             }
         }
     }

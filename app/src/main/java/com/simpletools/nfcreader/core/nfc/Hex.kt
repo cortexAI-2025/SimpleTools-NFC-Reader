@@ -6,7 +6,7 @@ fun ByteArray.toHex(separator: String = ":"): String =
     joinToString(separator) { "%02X".format(it.toInt() and 0xFF) }
 
 /** Version compacte, tronquée à [maxBytes] octets (suffixe « … » si coupée). */
-fun ByteArray.toHexPreview(maxBytes: Int = 64): String {
+fun ByteArray.toHexPreview(maxBytes: Int = 256): String {
     val head = if (size > maxBytes) copyOf(maxBytes) else this
     return head.toHex(" ") + if (size > maxBytes) " …" else ""
 }
